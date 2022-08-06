@@ -1,0 +1,70 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  6
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       volScalarField;
+    location    "0/air";
+    object      k;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+dimensions      [0 2 -2 0 0 0 0];
+
+internalField   uniform 1;
+
+boundaryField
+{
+    hvac1_supply
+    {
+      type            turbulentIntensityKineticEnergyInlet;
+      intensity       0.035;  //turbulence intensity
+      value           uniform 0.052;
+    }
+    hvac1_return
+    {
+      type            fixedGradient;
+		  gradient        uniform 0;
+    }
+    awall
+    {
+      type            kqRWallFunction; //standard wall function
+		  value           uniform 1;
+    }
+    bwall    
+    {
+      type            kqRWallFunction; //standard wall function
+		  value           uniform 1;
+    }
+    cwall
+    {
+      type            kqRWallFunction; //standard wall function
+		  value           uniform 1;
+    }
+    dwall
+    {
+      type            kqRWallFunction; //standard wall function
+		  value           uniform 1;
+    }
+    ceiling
+    {
+      type            kqRWallFunction; //standard wall function
+		  value           uniform 1;
+    }
+    floor
+    {
+      type            kqRWallFunction; //standard wall function
+		  value           uniform 1;
+    }    
+    air_to_ups1
+    {
+      type            kqRWallFunction; //standard wall function
+		  value           uniform 1;
+    }
+}

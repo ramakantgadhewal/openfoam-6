@@ -1,0 +1,80 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v1912                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "system/air_fluid";
+    object      fvOptions;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+
+absolute_heat_source
+{
+	active		true;
+	type		scalarSemiImplicitSource;
+	scalarSemiImplicitSourceCoeffs
+	{
+		injectionRateSuSp
+		{
+			h	(50.0 0.0);  //W
+		}
+		selectionMode	all;
+		volumeMode	absolute;
+	}
+}
+
+
+/* =============================================================================
+
+temperature_limitation
+{
+	type	limitTemperature;
+	active	true;
+	limitTemperatureCoeffs
+	{
+		selectionMode all;
+		min	200;
+		max	400;
+	}
+}
+
+specific_heat_source
+{
+	active		true;
+	type		scalarSemiImplicitSource;
+	scalarSemiImplicitSourceCoeffs
+	{
+		injectionRateSuSp
+		{
+			h	(100000.0 0.0);  //W/m3
+		}
+		selectionMode	all;
+		volumeMode	specific;
+		volumeMode	 absolute;
+	}
+}
+
+absolute_heat_source
+{
+	active		true;
+	type		scalarSemiImplicitSource;
+	scalarSemiImplicitSourceCoeffs
+	{
+		injectionRateSuSp
+		{
+			h	(100000.0 0.0);  //W
+		}
+		selectionMode	all;
+		volumeMode	absolute;
+	}
+}
+
+==============================================================================*/

@@ -1,0 +1,46 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  7
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       volScalarField;
+    location    "0/heater";
+    object      T;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+dimensions      [ 0 0 0 1 0 0 0 ];
+
+internalField   uniform 300;
+
+boundaryField
+{
+
+    adiabatic_walls
+    {
+		type            zeroGradient;
+    }
+    air_fluid_to_chip_solid
+    {
+		type            	compressible::turbulentTemperatureRadCoupledMixed;
+		Tnbr            	T;
+		kappaMethod     	solidThermo;
+		kappa           	kappa;
+		value           	$internalField;
+    }
+    chip_solid_to_heat_sink_solid
+    {
+		type            	compressible::turbulentTemperatureRadCoupledMixed;
+		Tnbr            	T;
+		kappaMethod     	solidThermo;
+		kappa           	kappa;
+		value           	$internalField;
+    }
+
+}

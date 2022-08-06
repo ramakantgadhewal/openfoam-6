@@ -1,0 +1,29 @@
+Supply:
+Re = 200000
+turbulence intensity I = 0.035
+Mean flow velocity U = 5.32 m/s
+turbulent energy k = 0.052
+
+turbulent length l = 0.0228
+epsilon = 0.085
+
+Return
+Re = 156000
+turbulence intensity I = 0.036
+Mean flow velocity U = 2.32 m/s
+turbulent energy k = 0.010
+
+turbulent length l = 0.04
+epsilon = 0.0041
+
+To run the analysis
+> ideasUnvToFoam cfd554mesh3.unv
+> renumberMesh (run this if required and replace the polymesh folder)
+> splitMeshRegions -cellZones -overwrite
+
+> chtMultiRegionFoam > solver.log &
+
+>paraFoam -touchAll
+>foamToVTK -region air_fluid
+>foamToVTK -region chip_solid
+>foamtoVTK -region heat_sink_solid  

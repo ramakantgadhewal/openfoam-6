@@ -1,0 +1,69 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  6
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       volScalarField;
+    location    "0/air";
+    object      nut;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+dimensions      [0 2 -1 0 0 0 0];
+
+internalField   uniform 1;
+
+boundaryField
+{
+    hvac1_supply
+    {
+      type            calculated;
+		  value           uniform 1;
+    }
+    hvac1_return
+    {
+      type            calculated;
+		  value           uniform 1;
+    }
+    awall
+    {
+      type            nutkWallFunction; //wall function based on the magnitude of k
+		  value           uniform 1;
+    }
+    bwall    
+    {
+      type            nutkWallFunction;
+		  value           uniform 1;
+    }
+    cwall
+    {
+      type            nutkWallFunction;
+		  value           uniform 1;
+    }
+    dwall
+    {
+      type            nutkWallFunction;
+		  value           uniform 1;
+    }
+    ceiling
+    {
+      type            nutkWallFunction;
+		  value           uniform 1;
+    }
+    floor
+    {
+      type            nutkWallFunction;
+		  value           uniform 1;
+    }    
+    air_to_ups1
+    {
+      type            nutkWallFunction;
+		  value           uniform 1;
+    }
+}

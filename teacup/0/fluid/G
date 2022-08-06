@@ -1,0 +1,81 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  6
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       volScalarField;
+    object      G;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+dimensions      [1 0 -3 0 0 0 0];
+
+internalField   uniform 0;
+
+boundaryField
+{
+
+    left
+    {
+      type            MarshakRadiation;
+      emissivityMode  lookup;
+      emissivity      uniform 0.8; //for air 0.8 & for water 0.96
+      value           uniform 0;
+    }
+    right
+    {
+      type            MarshakRadiation;
+      emissivityMode  lookup;
+      emissivity      uniform 0.8;
+      value           uniform 0;
+    }
+    top
+    {
+      type            MarshakRadiation;
+      emissivityMode  lookup;
+      emissivity      uniform 0.8;
+      value           uniform 0;
+    }
+    bottom
+    {
+      type            MarshakRadiation;
+      emissivityMode  lookup;
+      emissivity      uniform 0.8;
+      value           uniform 0;
+    }
+    front
+    {
+		  type            MarshakRadiation;
+      emissivityMode  lookup;
+      emissivity      uniform 0.8;
+      value           uniform 0;
+    }
+    back
+    {
+		  type            MarshakRadiation;
+      emissivityMode  lookup;
+      emissivity      uniform 0.8;
+      value           uniform 0;
+    }
+    fluid_to_tea
+    {
+      type            MarshakRadiation;
+      emissivityMode  lookup;
+      emissivity      uniform 0.8;
+      value           uniform 0;
+    }
+    fluid_to_cup
+    {
+      type            MarshakRadiation;
+      emissivityMode  lookup;
+      emissivity      uniform 0.8;
+      value           uniform 0;
+    }
+
+}

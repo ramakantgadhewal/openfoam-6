@@ -1,0 +1,65 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  6
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       volScalarField;
+    location    "0.01";
+    object      nut;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+dimensions      [0 2 -1 0 0 0 0];
+
+internalField   uniform 0;
+
+boundaryField
+{
+    left
+    {
+      type            calculated;
+      value           uniform 0;
+    }
+    right
+    {
+      type            calculated;
+      value           uniform 0;
+    }
+    front
+    {
+      type            nutkWallFunction; //wall function based on the magnitude of k
+      value           uniform 0;
+    }
+    back
+    {
+      type            nutkWallFunction; //wall function based on the magnitude of k
+      value           uniform 0;
+    }
+    top
+    {
+      type            nutkWallFunction; //wall function based on the magnitude of k
+      value           uniform 0;
+    }
+    bottom
+    {
+      type            nutkWallFunction; //wall function based on the magnitude of k
+      value           uniform 0;
+    }
+    fluid_to_cup
+    {
+      type            nutkWallFunction; //wall function based on the magnitude of k
+      value           uniform 0;
+    }
+    fluid_to_tea
+    {
+      type            nutkWallFunction; //wall function based on the magnitude of k
+      value           uniform 0;
+    }
+
+}
