@@ -59,5 +59,15 @@ steady state conduction of heat in solids
 
 k d2T/dxi2 = 0
 
+## k-Ɛ Model values
+
+k-Ɛ defines the inlet turbulence properties
+
+k - Turbulent energy
+
+Ɛ - Turbulence dissipation rate
+
+
+
 
 

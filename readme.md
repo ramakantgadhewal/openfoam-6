@@ -19,6 +19,7 @@ So Thermal diffusivity alpha = k/rho Cp = 1.5/(2300*1.07e-3) = 6.1e-7 m2/s
 
 ## Foam to VTK by region
 >foamToVTK -region air_fluid
+>foamToVTK -region air_fluid -time 20:100 //one specified time rage fromspecific region
 >foamToVTK -region chip_solid
 >foamToVTK -region heat_sink_solid
 
@@ -128,7 +129,7 @@ readline>quit
 
 setSet
 readline>List //gives all available zones
-readline>cellSet fluidSet new boxToCell (-250 -250 -250) (250 250 250) //creates a new zone named "fluidSet" and inculdes all the cells with the bounding box
+readline>cellSet fluidSet new boxToCell (-1 -1 -1) (1 1 1) //creates a new zone named "fluidSet" and inculdes all the cells with the bounding box
 readline>cellSet fluidSet delete zoneToCell cylinder1 //removes all the cells from zone named "cylinder1"
 readline>cellZoneSet fluid new setToCellZone fluidSet //creates a new zone named "fluid" from cellSet "fluidSet"
 readline>quit
@@ -200,4 +201,134 @@ dh = 4 * area / Hydraulic perimeter
 So, Re 	= 0.24 * 1 * 1.2/1.84e-5
 		= 15474
 
+========================
+--------------------------------------------------------------------------
+There are not enough slots available in the system to satisfy the 10
+slots that were requested by the application:
 
+  chtMultiRegionSimpleFoam
+
+Either request fewer slots for your application, or make more slots
+available for use.
+
+A "slot" is the Open MPI term for an allocatable unit where we can
+launch a process.  The number of slots available are defined by the
+environment in which Open MPI processes are run:
+
+  1. Hostfile, via "slots=N" clauses (N defaults to number of
+     processor cores if not provided)
+  2. The --host command line parameter, via a ":N" suffix on the
+     hostname (N defaults to 1 if not provided)
+  3. Resource manager (e.g., SLURM, PBS/Torque, LSF, etc.)
+  4. If none of a hostfile, the --host command line parameter, or an
+     RM is present, Open MPI defaults to the number of processor cores
+
+In all the above cases, if you want Open MPI to default to the number
+of hardware threads instead of the number of processor cores, use the
+--use-hwthread-cpus option.
+
+Alternatively, you can use the --oversubscribe option to ignore the
+number of available slots when deciding the number of processes to
+launch.
+--------------------------------------------------------------------------
+## checkMesh
+
+checkMesh -help
+checkMesh -allGeometry -allTopology -writeAllFields -writeSets vtk
+----------------------------------------------------
+
+## STL 
+
+To add name of the solid in a stl file
+
+The below one adds "hsair3walls" as solid name in the file "hsair3walls.stl"
+
+sed -i '1 s/^.*$/solid hsair3walls/' hsair3walls.stl
+---------------
+
+## setSet to remove bad cells
+
+cellSet c0 new faceToCell zeroVolumes any
+cellSet c0 add faceToCell wrongFaces any
+cellSet c0 invert
+quit
+
+-> subsetMesh c0 -overwrite
+-> then rename the empty patch in boundary file
+----------------------
+
+## Run Parallel
+
+. ${WM_PROJECT_DIR:?}/bin/tools/RunFunctions
+
+decomposePar -allRegions
+
+runParallel chtMultiRegionFoam
+
+reconstructPar -allRegions
+
+## To generate residuals from a log file
+
+foamLog solver4.log
+
+-> this command creates folder callled log that has all residuals
+
+
+## Explore WSL file system in windows explorer
+
+-> run the below from WSL terminal
+
+>"explorer.exe ."
+
+## CheckMesh details
+
+#### Cells with small determinant
+  -> Volume is less compared to face area
+  -> They are planar and collinear
+
+#### Concave cells
+The errors are about the cells that result from the way blockMesh connects the two blocks.
+
+Let me try some ascii, ignore the grey x'es.
+
+o----o
+|xxx |
+|xxx o---o
+|xxx |xx |
+o----o---o
+
+
+You see two cells, that are connected. The left cell has five nodes (the four corner nodes and the hanging node), whereas the right cell has only four. checkMesh will report the left cell as concave, because there are faces with parallel face normal vectors (the green and the blue face). However, there is nothing wrong with this cell.
+
+If we - manually modify the location of the nodes, we get rid of the error
+
+o----o
+| xxx \
+| xxxx o--o
+| xxx / xs |
+o----o-----o
+
+Now we have moved the hanging node with the result, that the face normal vectors of the green and the blue faces are not parallel anymore.
+
+
+You can try this if you connect two blocks that are meshed with only one cell. Then you can easily play around with the node coordinates.
+
+#### negative volume
+
+you've moved the mesh too far in one timestep so the cells have collapsed
+
+
+
+## Cleaning terminal commands
+
+# find and delete 
+## remove all folders & files  except test2
+find ./myfolder -mindepth 1 ! -regex '^./myfolder/test2\(/.*\)?' -delete
+## remove only folders all except test2 
+find ./myfolder -mindepth 1 -type d ! -regex '^./myfolder/test2\(/.*\)?' -delete
+## remove only files all except test2  (only empty folders)
+find ./myfolder -mindepth 1 -type f ! -regex '^./myfolder/test2\(/.*\)?' -delete
+## remove only folders all except 0, constant, & system (all folders)
+find . -mindepth 1 -maxdepth 1 -type d -not \( -name '0' -or -name 'constant' -or -name 'system' \) -exec rm -r {} \;
+OR
+find ./ -mindepth 1 -maxdepth 1 -type d ! -regex '^./\(0\|constant\|system\)?' -exec rm -r {} \;
